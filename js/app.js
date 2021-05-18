@@ -1,10 +1,15 @@
 'use strict';
 
 //---------------------- Global-------------------
+let maxAttempts = 25 ;
 let userCount = prompt('Hello, You can choose the number rounds here or you keep it as default');
 // console.log(userCount);
-userCount = parseInt(userCount);
+// userCount = parseInt(userCount);
 // console.log(typeof(userCount));
+if (maxAttempts !== userCount && userCount !== null && userCount !== '') {
+  maxAttempts = userCount 
+  console.log(userCount);
+}
 
 
 let images = [];
@@ -20,11 +25,6 @@ let firstImageElement=document.getElementById('first');
 let secondImageElement=document.getElementById('second');
 let thirdImageElement=document.getElementById('third');
 
-let maxAttempts = 25;
-if (userCount !== maxAttempts && userCount !== null && userCount !== '') {
-  userCount = maxAttempts
-  
-}
 
 let userCounter = 0;
 
@@ -184,4 +184,3 @@ function viewChart() {
 console.log(imageVotes);
 console.log(imageShown);
 console.log(productName);
-
