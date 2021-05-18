@@ -1,16 +1,31 @@
 'use strict';
 
 //---------------------- Global-------------------
+let userCount = prompt('Hello, You can choose the number rounds here or you keep it as default');
+// console.log(userCount);
+userCount = parseInt(userCount);
+// console.log(typeof(userCount));
+
+
 let images = [];
+let imageVotes = [];
+let imageShown = [];
+let productName = [];
 
 let firstImage;
 let secondImage;
 let thirdImage;
+let threeImages = [];
 let firstImageElement=document.getElementById('first');
 let secondImageElement=document.getElementById('second');
 let thirdImageElement=document.getElementById('third');
 
 let maxAttempts = 25;
+if (userCount !== maxAttempts && userCount !== null && userCount !== '') {
+  userCount = maxAttempts
+  
+}
+
 let userCounter = 0;
 
 function ProuductImage(name, source){
@@ -19,6 +34,7 @@ function ProuductImage(name, source){
     this.count = 0;
     this.votes = 0;
     images.push(this);
+    productName.push(this.name);
 }
 
 new ProuductImage('bag', 'img/assets/bag.jpg');
@@ -50,21 +66,28 @@ function RandomIndex(){
 //console.log(Math.floor(Math.random() * images.length));
 
 function renderThreeImages(){
-     firstImage = RandomIndex();
-     secondImage = RandomIndex();
-     thirdImage = RandomIndex();
-
-    while(firstImage === secondImage || firstImage === thirdImage || secondImage === thirdImage){
+    firstImage = RandomIndex();
     secondImage = RandomIndex();
     thirdImage = RandomIndex();
+    
+    while(firstImage === secondImage || firstImage === thirdImage || secondImage === thirdImage || threeImages.includes(firstImage) || threeImages.includes(secondImage) || threeImages.includes(thirdImage)){
+        firstImage = RandomIndex();
+        secondImage = RandomIndex();
+        thirdImage = RandomIndex();
     }
+    threeImages = [];
+    threeImages.push(firstImage);
+    threeImages.push(secondImage);
+    threeImages.push(thirdImage);
+    //console.log(threeImages);
+
     // console.log(firstImageIndex);
     // console.log(secondImageIndex);
     // console.log(thirdImageIndex);
     // console.log(images[firstImageIndex]);
     // console.log(images[secondImageIndex]);
     // console.log(images[thirdImageIndex]);
-
+    
     firstImageElement.src = images[firstImage].source;
     images[firstImage].count++;
     secondImageElement.src = images[secondImage].source;
@@ -73,6 +96,10 @@ function renderThreeImages(){
     images[thirdImage].count++;
 }
 renderThreeImages();
+//console.log(images);
+
+
+
 
 
 firstImageElement.addEventListener('click', handleUserClick);
@@ -96,22 +123,65 @@ function handleUserClick(event){
         firstImageElement.removeEventListener('click', handleUserClick);
         secondImageElement.removeEventListener('click', handleUserClick);
         thirdImageElement.removeEventListener('click', handleUserClick);
-        
-        let list = document.getElementById('result');
-        let btn =document.getElementById('btn');
-        btn.addEventListener('click', show)
-        function show(){
-            let liElement;
-            for (let i = 0; i < images.length; i++) {
-                liElement = document.createElement('li');
-                list.appendChild(liElement);
-                liElement.textContent = `${images[i].name} had ${images[i].votes}  votes, and was seen ${images[i].count} times`;
-            }
+        for (let i = 0; i < images.length; i++) {
+            imageVotes.push(images[i].votes);
+            imageShown.push(images[i].count);
         }
+        // let list = document.getElementById('result');
+        // let btn =document.getElementById('btn');
+        // btn.addEventListener('click', show)
+        // function show(){
+        //     let liElement;
+        //     for (let i = 0; i < images.length; i++) {
+        //         liElement = document.createElement('li');
+        //         list.appendChild(liElement);
+        //         liElement.textContent = `${images[i].name} had ${images[i].votes}  votes, and was seen ${images[i].count} times`;
+        //     }
+        // }
+        let list = document.getElementById("result");
+        let btn = document.getElementById("btn");
+        btn.addEventListener("click", show);
+        function show() {
+            viewChart();
+      }
+
     }
 }
-    
+
+function viewChart() {
+    let ctx = document.getElementById("myChart").getContext("2d");
+    let myChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: productName,
+        datasets: [
+          {
+            label: "# of Votes",
+            data: imageVotes,
+            backgroundColor: "blue",
+            borderColor: "black",
+            borderWidth: 1,
+          },
+          {
+            label: "# of Shown",
+            data: imageShown,
+            backgroundColor: "gray",
+            borderColor: "black",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  }    
 // console.log(images);
-
-
+console.log(imageVotes);
+console.log(imageShown);
+console.log(productName);
 
