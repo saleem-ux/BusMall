@@ -56,7 +56,6 @@ function gettigItem() {
 
   // renderThreeImages();
 }
-gettigItem();
 
 
 new ProuductImage('bag', 'img/assets/bag.jpg');
@@ -166,11 +165,11 @@ function handleUserClick(event){
         btn.addEventListener("click", show);
         function show() {
             viewChart();
-            settingItem();
-
-      }
-
-    }
+            
+          }
+          
+        }
+        settingItem();
 }
 
 function viewChart() {
@@ -204,7 +203,9 @@ function viewChart() {
         },
       },
     });
-  }    
+  }  
+  gettigItem();
+  
  
 // console.log(images);
 // console.log(imageVotes);
